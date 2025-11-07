@@ -1,0 +1,10 @@
+{
+  "users": [
+    { "username": "standard_user", "password": "secret_sauce", "type": "standard" },
+    { "username": "problem_user", "password": "secret_sauce", "type": "problem" },
+    { "username": "performance_glitch_user", "password": "secret_sauce", "type": "perf" },
+    { "username": "error_user", "password": "secret_sauce", "type": "error" },
+    { "username": "visual_user", "password": "secret_sauce", "type": "visual" },
+    { "username": "locked_out_user", "password": "secret_sauce", "type": "locked" }
+  ]
+}
