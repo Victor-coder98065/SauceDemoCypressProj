@@ -1,4 +1,5 @@
 Feature: Inventory and UI Behaviors
+    Validates product listing, sorting, detail pages, cart interactions, and UI state reset functionality.
 
     Background: Navigating to the SauceDemo login page
         Given I am on the login page
@@ -26,7 +27,7 @@ Feature: Inventory and UI Behaviors
             | Price (low to high) | ascending price         |
             | Price (high to low) | descending price        |
 
-    @focus
+
     Scenario: Product Detail Page Actions
         When I login as "standard_user"
         Then I should see the first products details match the inventory
@@ -36,3 +37,13 @@ Feature: Inventory and UI Behaviors
         When I remove the first 3 products from the cart
         Then the cart badge should show "0"
         Then the social media icons should open correct URLs
+
+
+    Scenario: Reset App State clears cart, restores sort order, and resets buttons
+        When I login as "standard_user"
+        And I add the first 3 products to the cart
+        And I sort products by "Price (low to high)"
+        When I open the side menu and click "Reset App State"
+        Then the cart badge should show "0"
+        And the buttons for the first 3 products should display "Add to cart"
+        And then I should see products listed in "alphabetical ascending" order

@@ -6,13 +6,7 @@ const inventoryPage = new InventoryPage();
 
 Before(() => {
   cy.visit('/');
-});
-
-//#region Given Steps
-
-
-//#endregion
-
+  });
 
 //#region When Steps
 
@@ -152,7 +146,6 @@ Then('the buttons for the first {int} products should display {string}', (count:
 
 
 Then('I should see the first products details match the inventory', () => {
-  // Capture all inventory page details in a single chain
   cy.get(inventoryPage.productNames)
     .first()
     .invoke('text')
@@ -169,10 +162,8 @@ Then('I should see the first products details match the inventory', () => {
                 .first()
                 .invoke('attr', 'src')
                 .then((invImage) => {
-                  // Click on the first product to navigate to details page
                   cy.get(inventoryPage.productNames).first().click();
 
-                  // Verify product details match
                   cy.get('[data-test="inventory-item-name"]').should('have.text', invName);
                   cy.get('[data-test="inventory-item-desc"]').should('have.text', invDesc);
                   cy.get('[data-test="inventory-item-price"]').should('have.text', invPrice);
@@ -189,16 +180,19 @@ Then('I should see the first products details match the inventory', () => {
 
 
 Then('the social media icons should open correct URLs', () => {
-  const socialLinks = [
-    { selector: inventoryPage.twitterIcon, url: 'https://twitter.com/saucelabs' },
-    { selector: inventoryPage.facebookIcon, url: 'https://www.facebook.com/saucelabs' },
-    { selector: inventoryPage.linkedinIcon, url: 'https://www.linkedin.com/company/sauce-labs/' }
-  ];
+  cy.fixture('links.json').then((linksData) => {
+    const socialLinks = [
+      { selector: '[data-test="social-twitter"]', urlPage: linksData.xLink, verifyElement: 'body' },
+      { selector: '[data-test="social-facebook"]', urlPage: linksData.facebookLink, verifyElement: 'body' },
+      { selector: '[data-test="social-linkedin"]', urlPage: linksData.linkedInLink, verifyElement: 'body' }
+    ];
 
-  socialLinks.forEach(link => {
-    cy.get(link.selector)
-      .should('have.attr', 'href', link.url)
-      .and('have.attr', 'target', '_blank');
+    socialLinks.forEach(link => {
+      cy.get(link.selector).click();
+
+      cy.puppeteer('switchToTabAndGetContent', link.urlPage, link.verifyElement, true)
+      .should('contain', 'Sauce Labs');
+    });
   });
 });
 

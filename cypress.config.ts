@@ -10,6 +10,15 @@ export default defineConfig({
     baseUrl: 'https://www.saucedemo.com',
     specPattern: 'cypress/e2e/features/**/*.feature',
     supportFile: 'cypress/support/e2e.ts',
+
+
+    reporter: 'mochawesome',
+    reporterOptions: {
+      reportDir: 'cypress/reports',
+      overwrite: false,
+      html: true,
+      json: true
+  },
     async setupNodeEvents(on, config) {
       await addCucumberPreprocessorPlugin(on, config);
       
@@ -24,9 +33,9 @@ export default defineConfig({
       setup({
         on,
         onMessage: {
-          async switchToTabAndGetContent(browser: PuppeteerBrowser, urlPage: string, pageElement: string){
-            const page = await retry<Promise<Page>>(async () => {
-              const pages = await browser.pages();
+          async switchToTabAndGetContent(browser: any, urlPage: string, pageElement: string){
+            const page = await retry(async () => {
+              const pages: Page[] = await browser.pages();
               const foundPage = pages.find((p) => p.url().includes(urlPage));
               if (!foundPage) throw new Error("Could not find page");
               return foundPage;
@@ -45,9 +54,9 @@ export default defineConfig({
               throw new Error(`Failed to get content from ${pageElement}: ${errorMessage}`);
             }
           },
-          async switchToTabAndClickElement(browser: PuppeteerBrowser, urlPage: string, pageElement: string){
-            const page = await retry<Promise<Page>>(async () => {
-              const pages = await browser.pages();
+          async switchToTabAndClickElement(browser: any, urlPage: string, pageElement: string){
+            const page = await retry(async () => {
+              const pages: Page[] = await browser.pages();
               const foundPage = pages.find((p) => p.url().includes(urlPage));
               if (!foundPage) throw new Error("Could not find page");
               return foundPage;

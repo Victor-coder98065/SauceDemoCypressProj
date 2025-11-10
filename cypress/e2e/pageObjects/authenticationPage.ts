@@ -4,4 +4,5 @@ export class AuthenticationPage {
   loginButton = 'input[data-test="login-button"]';
   errorMessage = 'h3[data-test="error"]';
   clearErrorButton = 'button[data-test="error-button"]';
+  sideMenuItems = 'div[class="bm-menu-wrap"] a';
 }

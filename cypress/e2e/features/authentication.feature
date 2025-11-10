@@ -1,4 +1,5 @@
 Feature: Authentication and Role-Based Access
+    Validates login, logout, and session behaviors for different user roles to ensure secure and correct access.
 
     Background: Navigating to the SauceDemo login page
         Given I am on the login page
@@ -41,10 +42,10 @@ Feature: Authentication and Role-Based Access
         Then I should be redirected to the login page
         And I should not be able to access the inventory page
 
-    @focus
+
     Scenario: Logging out ends the session and prevents access via browser navigation
         Given I login as "standard_user"
-        When I open the side menu and click Logout
+        When I open the side menu and click "Logout"
         Then I should be redirected to the login page
         When I navigate back using the browser button
         Then I should remain on the login page

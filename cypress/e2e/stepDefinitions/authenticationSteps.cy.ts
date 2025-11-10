@@ -58,9 +58,9 @@ When('I remain inactive for {int} minutes', (minutes: number) => {
   cy.clock().then((clock) => clock.restore());
 });
 
-When('I open the side menu and click Logout', () => {
+When('I open the side menu and click {string}', (menuItem: string) => {
   cy.get(inventoryPage.menuButton).siblings('button').click();
-  cy.get(inventoryPage.logoutLink).click();
+  cy.get(authPage.sideMenuItems).contains(menuItem).click();
 });
 
 When('I navigate back using the browser button', () => {
